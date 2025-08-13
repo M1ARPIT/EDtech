@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ open: false }">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EdTech</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+
+
+  <!-- ✅ Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- ✅ Alpine.js -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    [x-cloak] { display: none !important; }
+
+    /* ✅ Typewriter effect with infinite typing */
+    .typewriter {
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 4px solid orange;
+      animation: typing 3s steps(40, end) infinite, blink .75s step-end infinite;
+    }
+
+    @keyframes typing {
+      0% { width: 0 }
+      50% { width: 100% }
+      100% { width: 0 }
+    }
+
+    @keyframes blink {
+      from, to { border-color: transparent }
+      50% { border-color: orange; }
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900">
+
+  <!-- ✅ Sticky Navbar -->
+  <nav class="sticky top-0 z-50 bg-white shadow-sm px-6 py-4" x-data="{ open: false }">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <h1 class="text-3xl font-serif font-semibold text-blue-800">EdTech</h1>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center space-x-10 text-xl font-medium text-gray-800">
+        <a href="#why" class="hover:text-blue-600">About Us</a>
+        <a href="#specialised-programs" class="hover:text-blue-600">Specialised Programs</a>
+        <a href="#contact-form" class="hover:text-blue-600">ContactUs</a>
+        <a href="#" class="hover:text-blue-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 2.7a1 1 0 00.9 1.5h11.1a1 1 0 00.9-1.5L17 13M7 13l1.5-3M17 13l-1.5-3" />
+          </svg>
+        </a>
+      <!-- This goes in your desktop nav -->
+<div class="relative hidden md:block">
+  <button id="loginBtn" class="bg-orange-500 text-white px-4 py-2 rounded-md">
+    Login
+  </button>
+
+  <div id="userDropdown" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded shadow z-50">
+    <a href="/account.html" class="block px-4 py-2 hover:bg-gray-100">My Account</a>
+    <button id="logoutBtn" class="block w-full text-left px-4 py-2 hover:bg-gray-100">Logout</button>
+  </div>
+</div>
+
+
+      </div>
+
+      <!-- Mobile Button -->
+      <div class="md:hidden flex items-center">
+        <button @click="open = !open" class="text-gray-800 focus:outline-none">
+          <!-- Menu Icon -->
+          <svg x-show="!open" x-cloak xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <!-- Close Icon -->
+          <svg x-show="open" x-cloak xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div x-show="open" x-cloak x-transition class="md:hidden mt-4 space-y-5 text-xl font-medium text-gray-800">
+      <a href="#why" class="block px-5 hover:text-blue-600">About Us</a>
+      <a href="#specialised-programs" class="block px-5 hover:text-blue-600">Specialised Programs</a>
+      <a href="#contact-form" class="block px-5 hover:text-blue-600">ContactUs</a>
+      <a href="#" class="block px-5 hover:text-blue-600">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 2.7a1 1 0 00.9 1.5h11.1a1 1 0 00.9-1.5L17 13M7 13l1.5-3M17 13l-1.5-3" />
+        </svg> Cart
+      </a>
+     <!-- ✅ User button with dropdown -->
+<!-- This goes in your desktop nav -->
+<!-- ✅ Mobile Login Button -->
+<div class="block md:hidden px-5">
+  <button id="loginBtnMobile" class="bg-orange-500 text-white px-4 py-2 rounded-md w-full">
+    Login
+  </button>
+</div>
+
+  </nav>
+  <!-- Modal -->
+<!-- Signup/Login Modal -->
+<div id="authModal" class="fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-md bg-black/40">
+<div class="bg-white w-full max-w-lg p-4 sm:p-8 rounded-xl shadow-xl min-h-[520px] relative mx-4 overflow-y-auto max-h-[90vh]">
+    <!-- Close Button -->
+<button id="closeModal" class="absolute top-4 right-4 text-gray-600 hover:text-black text-xl">&times;</button>
+
+    <!-- Title -->
+    <h2 id="formTitle" class="text-2xl font-bold mb-6 text-center">Register</h2>
+
+    <!-- Full Name (Signup Only) -->
+    <input id="fullName" type="text" placeholder="Full Name"
+      class="w-full mb-4 px-4 py-3 border rounded-lg hidden" />
+
+    <!-- Email -->
+    <input id="email" type="email" placeholder="Email"
+      class="w-full mb-4 px-4 py-3 border rounded-lg" />
+
+    <!-- Password -->
+    <input id="password" type="password" placeholder="Password"
+      class="w-full mb-1 px-4 py-3 border rounded-lg" />
+
+    <!-- Error Message -->
+    <p id="passwordError" class="text-red-600 text-sm mb-2 hidden">Password must be at least 6 characters</p>
+
+    <!-- Confirm Password (Signup Only) -->
+    <input id="confirmPassword" type="password" placeholder="Confirm Password"
+      class="w-full mb-4 px-4 py-3 border rounded-lg hidden" />
+
+    <!-- Submit Button -->
+    <button id="submitBtn"
+      class="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-lg text-lg">Register</button>
+
+    <!-- Toggle Login/Signup -->
+    <p class="text-center mt-5 text-sm">
+      <a id="toggleForm" href="#" class="text-blue-500 underline">Already have an account? Login</a>
+    </p>
+  </div>
+</div>
+<div id="userDropdown" class="hidden absolute right-2 top-16 bg-white text-sm shadow-md rounded-lg z-50 w-40">
+  <ul class="divide-y divide-gray-200">
+    <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" id="logoutBtn">Logout</li>
+  </ul>
+</div>
+
+
+
+  <!-- ✅ Hero Section -->
+<section class="relative bg-cover bg-center min-h-[90vh] px-6 pt-12 pb-0" style="background-image: url('./assets/home.jpg');">
+  <div class="absolute inset-0 bg-white/70"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+    
+    <!-- ✨ Left Content -->
+ <div class="w-full md:w-1/2 flex items-center h-full">
+  <div class="space-y-10 py-10">
+    <h2 class="text-3xl md:text-4xl font-bold leading-snug text-gray-900 typewriter">
+      Start Your <span class="text-orange-500">Upskilling</span> Journey
+    </h2>
+
+    <p class="text-base md:text-lg text-gray-700">
+      Explore from our wide range of specialised programs and kickstart your career.
+    </p>
+
+    <div class="flex flex-wrap gap-4">
+      <a href="#specialised-programs" class="bg-blue-600 hover:bg-blue-900 text-white font-semibold px-8 py-3 rounded-lg transition">
+        Explore Now
+      </a>
+      <a href="#contact-form" class="border border-orange-400 text-orange-500 hover:bg-orange-500 hover:text-white font-semibold px-8 py-3 rounded-lg transition">
+        Talk to Us
+      </a>
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 text-sm md:text-base text-gray-700 font-medium">
+      <div class="flex items-center gap-2">
+        <span class="text-yellow-500 text-lg">⭐</span>
+        <span class="font-semibold">Rated 4.9/5</span>
+      </div>
+      <div class="hidden sm:block text-gray-400">┃</div>
+      <div class="flex items-center gap-2">
+        <span class="text-purple-600 text-lg">👥</span>
+        <span>Trusted by <span class="font-semibold">1.5 lac+</span> learners</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- 🎯 Right Image -->
+    <div class="w-full md:w-3/5 flex justify-center items-center py-12">
+      <img src="./assets/Side.png" alt="Hero Side Graphic" class="max-w-[90%] h-auto md:max-h-[500px] object-contain">
+    </div>
+  </div>
+<!-- image section  -->
+<div class="relative z-50 bg-transparent py-10">
+  <div class="max-w-6xl mx-auto px-4 text-center">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">In Collaboration With</h2>
+    <div class="overflow-hidden whitespace-nowrap">
+      <div class="flex animate-slide" style="width: 200%; display: inline-flex;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" class="h-8 md:h-10 inline-block mx-4">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" class="h-8 md:h-10 inline-block mx-4">
+        <img src="https://1000logos.net/wp-content/uploads/2021/04/Adobe-logo.png" alt="Adobe" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Amazon_icon.svg" alt="Amazon" class="h-8 md:h-10 inline-block mx-4">
+        <img src="https://1000logos.net/wp-content/uploads/2020/09/IBM-Logo-700x394.png" alt="IBM" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/Tata_Consultancy_Services_Logo.svg/320px-Tata_Consultancy_Services_Logo.svg.png" alt="TCS" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Apple_Logo.svg" alt="Apple" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Salesforce.com_logo.svg" alt="Salesforce" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Oracle_logo.svg" alt="Oracle" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <!-- Duplicate the logos for seamless looping -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" class="h-8 md:h-10 inline-block mx-4">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" class="h-8 md:h-10 inline-block mx-4">
+        <img src="https://1000logos.net/wp-content/uploads/2021/04/Adobe-logo.png" alt="Adobe" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Amazon_icon.svg" alt="Amazon" class="h-8 md:h-10 inline-block mx-4">
+        <img src="https://1000logos.net/wp-content/uploads/2020/09/IBM-Logo-700x394.png" alt="IBM" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/Tata_Consultancy_Services_Logo.svg/320px-Tata_Consultancy_Services_Logo.svg.png" alt="TCS" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Apple_Logo.svg" alt="Apple" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Salesforce.com_logo.svg" alt="Salesforce" class="h-8 md:h-10 inline-block mx-4 object-contain">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Oracle_logo.svg" alt="Oracle" class="h-8 md:h-10 inline-block mx-4 object-contain">
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .animate-slide {
+    display: inline-flex;
+    animation: slide 20s linear infinite;
+  }
+
+  @keyframes slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .animate-slide:hover {
+    animation-play-state: paused;
+  }
+
+  @media (min-width: 768md) {
+    .animate-slide {
+      animation: slide 25s linear infinite;
+    }
+  }
+</style>
+
+
+</section>
+
+
+
+<!-- Why EdTech Section -->
+     <section id = "why" class="form-section">
+  <div class="max-w-6xl mx-auto" x-data="{ selected: 'learn' }">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center text-gray-900 mb-12 tracking-wider">Why Choose Us?</h2>
+    
+    <div class="flex flex-col md:flex-row items-start justify-between gap-8">
+      <!-- Left Column -->
+      <div class="w-full md:w-1/2 space-y-6">
+        <template x-for="option in [
+          { key: 'learn', title: 'EdTech Learn', icon: 'M12 6v6m0 0v6m0-6h6m-6 0H6' },
+          { key: 'mentorship', title: 'EdTech Mentorship', icon: 'M8 12h.01M12 12h.01M16 12h.01M9 16h6m-6-8h6m-6 4h6' },
+          { key: 'skills', title: 'EdTech Skills', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4' },
+          { key: 'career', title: 'EdTech Career', icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' }
+        ]" :key="option.key">
+          <div 
+            class="bg-white rounded-lg p-4 flex items-center space-x-4 hover:bg-[#e6f7ff] cursor-pointer transition-all duration-300 ease-in-out"
+            :class="{ 'ring-2 ring-blue-500': selected === option.key }"
+            @click="selected = option.key"
+          >
+            <div class="bg-blue-200 rounded-full p-3">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="option.icon" />
+              </svg>
+            </div>
+            <span class="text-xl font-medium text-gray-900" x-text="option.title"></span>
+          </div>
+        </template>
+      </div>
+
+      <!-- Right Column (Blue Box Content) -->
+      <div class="w-full md:w-1/2 bg-[#d3ebff] rounded-xl p-6 md:p-8 relative transition-all duration-300 ease-in-out shadow-xl">
+        <div class="relative z-10">
+          <!-- Dynamic Content -->
+          <template x-if="selected === 'learn'">
+            <div>
+              <img src="assets/WHY0.jpg" alt="Learning" class="w-full h-64 object-cover rounded-lg mb-6">
+              <div class="bg-white bg-opacity-90 rounded-lg p-4 shadow-md">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">EdTech Learn</h3>
+                <p class="text-gray-700 text-sm">Comprehensive learning modules designed to build foundational skills with interactive content.</p>
+              </div>
+            </div>
+          </template>
+
+          <template x-if="selected === 'mentorship'">
+            <div>
+              <img src="assets/WHY.jpg" alt="Mentorship" class="w-full h-64 object-cover rounded-lg mb-6">
+              <div class="bg-white bg-opacity-90 rounded-lg p-4 shadow-md">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">EdTech Mentorship</h3>
+                <p class="text-gray-700 text-sm">Personalized guidance from industry experts to accelerate your growth.</p>
+              </div>
+            </div>
+          </template>
+
+          <template x-if="selected === 'skills'">
+            <div>
+              <img src="assets/WHY2.jpg" alt="Skills" class="w-full h-64 object-cover rounded-lg mb-6">
+              <div class="bg-white bg-opacity-90 rounded-lg p-4 shadow-md">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">EdTech Skills</h3>
+                <p class="text-gray-700 text-sm">Practical skill-building courses aligned with current industry demands.</p>
+              </div>
+            </div>
+          </template>
+
+          <template x-if="selected === 'career'">
+            <div>
+              <img src="assets/WHY3.jpg" alt="Career" class="w-full h-64 object-cover rounded-lg mb-6">
+              <div class="bg-white bg-opacity-90 rounded-lg p-4 shadow-md">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">EdTech Career</h3>
+                <p class="text-gray-700 text-sm">Career-focused training with job placement support and resume building.</p>
+              </div>
+            </div>
+          </template>
+
+          <!-- Mini Avatar -->
+          <div class="mt-4 flex justify-end" x-show="selected">
+            <div class="bg-white rounded-full p-2 shadow-md flex items-center space-x-2">
+              <img src="assets/LP.png"  alt="Support Icon" class="w-6 h-6 rounded-full">
+              <span class="text-gray-600 text-sm">Hello ~! </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Alpine.js -->
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<section id="specialised-programs" class="bg-[#f3fbff] py-16 px-4 md:px-10">
+
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center text-gray-900 mb-12 tracking-wide">
+      Our Courses
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- COURSE CARD TEMPLATE -->
+      
+      <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+      <img src="assets/SEK.png" alt="Learning" class="w-full h-40 object-cover rounded-lg mb-6">
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-gray-800">School Education (K-12)</h3>
+          <p class="text-sm text-gray-600 mt-1">Interactive & curriculum-aligned learning for school students.</p>
+          <div class="mt-4 flex justify-between items-center">
+            <button class="know-more-btn bg-blue-600 text-white text-sm px-4 py-1.5 rounded-full hover:bg-blue-700 transition">Know More</button>
+            <span class="text-xs text-gray-500">👨‍🎓 Popular</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Duplicate cards below with content changed -->
+
+      <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+      <img src="assets/CU.png" alt="Learning" class="w-full h-40 object-cover rounded-lg mb-6">
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-gray-800">College/University Education</h3>
+          <p class="text-sm text-gray-600 mt-1">Advanced resources & mentoring for higher education.</p>
+          <div class="mt-4 flex justify-between items-center">
+            <button class="know-more-btn bg-blue-600 text-white text-sm px-4 py-1.5 rounded-full hover:bg-blue-700 transition">Know More</button>
+            <span class="text-xs text-gray-500">🎓 UG/PG Focus</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+      <img src="assets/CT.png" alt="Learning" class="w-full h-40 object-cover rounded-lg mb-6">
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-gray-800">Corporate Training</h3>
+          <p class="text-sm text-gray-600 mt-1">Upskilling employees with hands-on and remote sessions.</p>
+          <div class="mt-4 flex justify-between items-center">
+            <button class="know-more-btn bg-blue-600 text-white text-sm px-4 py-1.5 rounded-full hover:bg-blue-700 transition">Know More</button>
+            <!-- <button class="know-more-btn bg-blue-500 text-white px-4 py-2 rounded-md">Know More</button> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+      <img src="assets/SD.png" alt="Learning" class="w-full h-40 object-cover rounded-lg mb-6">
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-gray-800">Skill Development</h3>
+          <p class="text-sm text-gray-600 mt-1">Job-ready skills through coding, soft skills & more.</p>
+          <div class="mt-4 flex justify-between items-center">
+            <button class="know-more-btn bg-blue-600 text-white text-sm px-4 py-1.5 rounded-full hover:bg-blue-700 transition">Know More</button>
+            <span class="text-xs text-gray-500">💡 Hands-on</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+      <img src="assets/CE.png" alt="Learning" class="w-full h-40 object-cover rounded-lg mb-6">
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-gray-800">Competitive Exam Prep</h3>
+          <p class="text-sm text-gray-600 mt-1">Focused prep for NEET, UPSC & more with expert mentors.</p>
+          <div class="mt-4 flex justify-between items-center">
+            <button class="know-more-btn bg-blue-600 text-white text-sm px-4 py-1.5 rounded-full hover:bg-blue-700 transition">Know More</button>
+            <span class="text-xs text-gray-500">📚 Targeted</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+      <img src="assets/LT.png" alt="Learning" class="w-full h-40 object-cover rounded-lg mb-6">
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-gray-800">Language Learning</h3>
+          <p class="text-sm text-gray-600 mt-1">English & regional language fluency for all ages.</p>
+          <div class="mt-4 flex justify-between items-center">
+            <button class="know-more-btn bg-blue-600 text-white text-sm px-4 py-1.5 rounded-full hover:bg-blue-700 transition">Know More</button>
+            <span class="text-xs text-gray-500">🌐 Multilingual</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+      <img src="assets/LL.png" alt="Learning" class="w-full h-40 object-cover rounded-lg mb-6">
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-gray-800">Online Tutoring</h3>
+          <p class="text-sm text-gray-600 mt-1">Live one-on-one help for subjects, exams & homework.</p>
+          <div class="mt-4 flex justify-between items-center">
+            <button class="know-more-btn bg-blue-600 text-white text-sm px-4 py-1.5 rounded-full hover:bg-blue-700 transition">Know More</button>
+            <span class="text-xs text-gray-500">🧑‍🏫 24/7</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+      <img src="assets/SE.png" alt="Learning" class="w-full h-40 object-cover rounded-lg mb-6">
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-gray-800">Special Education</h3>
+          <p class="text-sm text-gray-600 mt-1">Supportive learning for differently abled learners.</p>
+          <div class="mt-4 flex justify-between items-center">
+            <button class="know-more-btn bg-blue-600 text-white text-sm px-4 py-1.5 rounded-full hover:bg-blue-700 transition">Know More</button>
+            <span class="text-xs text-gray-500">🧠 Inclusive</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+      <img src="assets/TS.png" alt="Learning" class="w-full h-40 object-cover rounded-lg mb-6">
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-gray-800">Test Series & Mock Platforms</h3>
+          <p class="text-sm text-gray-600 mt-1">Smart testing tools & analytics to boost performance.</p>
+          <div class="mt-4 flex justify-between items-center">
+            <button class="know-more-btn bg-blue-600 text-white text-sm px-4 py-1.5 rounded-full hover:bg-blue-700 transition">Know More</button>
+            <span class="text-xs text-gray-500">📝 Adaptive</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+      <img src="assets/TS.png" alt="Learning" class="w-full h-40 object-cover rounded-lg mb-6">
+        <div class="p-5">
+          <h3 class="text-lg font-bold text-gray-800">EdTech for Teachers</h3>
+          <p class="text-sm text-gray-600 mt-1">Lesson planning, classroom tools & LMS systems.</p>
+          <div class="mt-4 flex justify-between items-center">
+            <button class="know-more-btn bg-blue-600 text-white text-sm px-4 py-1.5 rounded-full hover:bg-blue-700 transition">Know More</button>
+            <span class="text-xs text-gray-500">🧑‍💻 Empower</span>
+          </div>
+        </div>
+      </div>
+    </div> 
+<!-- Popup Form -->
+<div id="popup" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 hidden">
+  <div class="popup-content bg-white/30 backdrop-blur-md p-6 rounded-xl w-[90%] max-w-md relative border border-white/20 shadow-2xl">
+    <span id="close-btn" class="text-2xl absolute top-2 right-4 text-gray-600 hover:text-red-500 cursor-pointer">&times;</span>
+    <h2 class="text-xl font-semibold mb-4 text-white">Get More Info</h2>
+    <form id="popup-form" class="space-y-5">
+      <input type="text" placeholder="Your Name" class="w-full border border-gray-200 rounded-lg px-4 py-2 bg-white/80 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200" required>
+      <input type="email" placeholder="Your Email" class="w-full border border-gray-200 rounded-lg px-4 py-2 bg-white/80 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200" required>
+      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300 font-medium">Submit</button>
+    </form>
+  </div>
+</div>
+
+</section>
+
+
+    <section id="contact-form" class="form-section">
+      <div class="form-container">
+        <h2>📬 Get in Touch</h2>
+        <p>Interested in EdTech solutions? Fill out the form below to connect with us!</p>
+        <form id="edtech-form" action="#">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your Name" required aria-required="true">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Your Email" required aria-required="true">
+          </div>
+          <div class="form-group">
+            <label for="mobile">Mobile Number</label>
+            <input type="tel" id="mobile" name="mobile" placeholder="Your Mobile Number" pattern="[0-9]{10}" required aria-required="true">
+          </div>
+          <div class="form-group">
+            <label for="sector">Interested Sector</label>
+            <select id="sector" name="sector" required aria-required="true">
+              <option value="" disabled selected>Select a Sector</option>
+              <option value="school">School Education (K–12)</option>
+              <option value="college">College/University Education</option>
+              <option value="corporate">Corporate Training</option>
+              <option value="skills">Skill Development</option>
+              <option value="exam">Competitive Exam Prep</option>
+              <option value="language">Language Learning</option>
+              <option value="tutoring">Online Tutoring</option>
+              <option value="special">Special Education</option>
+              <option value="test">Test Series & Mock Platforms</option>
+              <option value="teachers">EdTech for Teachers</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Your Message" rows="5" required aria-required="true"></textarea>
+          </div>
+          <button type="submit" class="form-submit-button" aria-label="Submit Contact Form">Submit</button>
+        </form>
+      </div>
+    </section>
+    <!-- footer -->
+
+    <!-- Font Awesome CDN for icons -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  integrity="sha512-Z8o8X3+jf7uOhoZ1VcpYDRnhmH5MCuLxCEpPVoX1pJZ1Br9RZB1+aMeRpZXODBeF30rMCXPxg+NsA/0IyxQ0aQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+<!-- Footer -->
+<!-- ✅ Footer Component -->
+<footer class="bg-[#0f172a] text-white py-10 px-6 md:px-20">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    
+    <!-- Location & Contact Info -->
+    <div>
+      <h2 class="text-xl font-semibold mb-4">Contact Us</h2>
+      <p class="flex items-center gap-3 mb-2">
+        <i class="fas fa-map-marker-alt"></i>
+        123 Shadan Street, UIT Campus, India
+      </p>
+      <p class="flex items-center gap-3 mb-2">
+        <i class="fas fa-envelope"></i>
+        contact@shadanmusic.com
+      </p>
+      <p class="flex items-center gap-3">
+        <i class="fas fa-phone"></i>
+        +91 98765 43210
+      </p>
+    </div>
+
+    <!-- Quick Links or Description -->
+    <div>
+      <h2 class="text-xl font-semibold mb-4">About Us</h2>
+      <p class="text-sm">
+       EdTech platform is committed to empowering learners, fostering innovation, and making quality education accessible to all. Join us on a journey to transform learning through technology and inspiration.
+      </p>
+    </div>
+
+    <!-- Social Media Icons -->
+    <div>
+      <h2 class="text-xl font-semibold mb-4">Follow Us</h2>
+      <div class="flex gap-5 text-2xl">
+        <a href="#" class="hover:text-[#ff3f3f]">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="hover:text-[#25D366]">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="#" class="hover:text-[#1DA1F2]">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" class="hover:text-[#0077b5]">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="#" class="hover:text-[#EA4335]">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom line -->
+  <div class="text-center text-sm mt-10 border-t border-gray-600 pt-4">
+    &copy; 2025 EdTech , All rights reserved.
+  </div>
+</footer>
+
+
+<script src="popup.js"></script>
+ <script type="module" src="app.js"></script>
+ <script src="script.js"></script>
+
+
+  <!-- <script src="script.js"></script> -->
+
+</body>
+</html>
