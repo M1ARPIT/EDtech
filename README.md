@@ -62,7 +62,6 @@ Edit
 
 ### 📚 Courses
 ![Courses](assets/course.png)
-
 ### 📩 Contact
 ![Contact](assets/contact.png)
 
